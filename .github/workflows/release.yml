@@ -42,10 +42,26 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         id: linux_info
         run: |
-          ARTIFACT_PATH=$(find dist -name 'OpenFront Buddy*.AppImage' -type f | head -n 1)
+          echo "--- Searching for artifact in dist directory ---"
+          ls -lR dist # List contents of dist recursively for debugging
+          echo "--- Running find command ---"
+          # Use -print -quit; store output, print it, check if empty
+          FOUND_PATH=$(find dist -name 'OpenFront Buddy*.AppImage' -type f -print -quit)
+          echo "Raw output from find command: '${FOUND_PATH}'"
+          if [[ -z "$FOUND_PATH" ]]; then
+            echo "::error::AppImage artifact file not found using find command!"
+            find dist -type f -exec echo "Found file: {}" \; # Print all files found in dist
+            exit 1
+          fi
+          ARTIFACT_PATH="$FOUND_PATH" # Assign the found path
           ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")
+          echo "Determined Artifact Path: ${ARTIFACT_PATH}"
+          echo "Determined Artifact Name: ${ARTIFACT_NAME}"
+          echo "Setting output: artifact_path=${ARTIFACT_PATH}"
           echo "artifact_path=${ARTIFACT_PATH}" >> $GITHUB_OUTPUT
+          echo "Setting output: artifact_name=${ARTIFACT_NAME}"
           echo "artifact_name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+          echo "--- Outputs set ---"
 
       - name: Get Build Output Info (macOS)
         if: matrix.os == 'macos-latest'
