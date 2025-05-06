@@ -1,6 +1,8 @@
 # ⚡️ OpenFront Buddy ⚡️
 
-A minimal Electron wrapper for [OpenFront.io](https://openfront.io/) designed for speed. 🏎️⚡️ It really is that much smooother!
+A minimal Electron wrapper for [OpenFront.io](https://openfront.io/) designed for speed. 🏎️⚡️
+
+It really is that much smooother!
 
 <p align="center">
   <img src="assets/demo.avif" alt="OpenFront Buddy Demo">
