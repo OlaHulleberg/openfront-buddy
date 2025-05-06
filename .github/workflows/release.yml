@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: ".nvmrc"
+          node-version: "22.x"
           cache: "pnpm"
 
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
 
       - name: Get Build Output Info (Linux)
         if: matrix.os == 'ubuntu-latest'
-        id: linux_info
+        id: build_info
         run: |
           ARTIFACT_PATH=$(find dist -name '*.AppImage' -type f | head -n 1)
           ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")
@@ -49,7 +49,7 @@ jobs:
 
       - name: Get Build Output Info (macOS)
         if: matrix.os == 'macos-latest'
-        id: macos_info
+        id: build_info
         run: |
           ARTIFACT_PATH=$(find dist -name '*.dmg' -type f | head -n 1)
           ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")
@@ -58,7 +58,7 @@ jobs:
 
       - name: Get Build Output Info (Windows)
         if: matrix.os == 'windows-latest'
-        id: windows_info
+        id: build_info
         shell: pwsh # Use PowerShell on Windows runner
         run: |
           $ARTIFACT_PATH = Get-ChildItem -Path dist -Filter '*.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
@@ -69,8 +69,8 @@ jobs:
       - name: Upload Artifact (${{ matrix.os }})
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps[format('{0}_info', matrix.os)].outputs.artifact_name }}
-          path: ${{ steps[format('{0}_info', matrix.os)].outputs.artifact_path }}
+          name: ${{ steps.build_info.outputs.artifact_name }}
+          path: ${{ steps.build_info.outputs.artifact_path }}
           if-no-files-found: error # Fail if artifact not found
 
   release:
