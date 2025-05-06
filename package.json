@@ -1,0 +1,56 @@
+{
+  "name": "openfront-buddy",
+  "version": "1.0.0",
+  "description": "A minimal Electron wrapper for OpenFront.io",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "openfront",
+    "electron"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^36.1.0",
+    "electron-builder": "^26.0.12"
+  },
+  "packageManager": "pnpm@10.6.3",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
+  },
+  "build": {
+    "appId": "com.olahulleberg.openfront-buddy",
+    "productName": "OpenFront Buddy",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon512_rounded.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon512_rounded.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon512_rounded.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
